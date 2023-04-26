@@ -1,12 +1,19 @@
-# Technical Writing Sample:
+# Incompatibility between Material UI, Emotion, and Next.js SSR
 
-**Introduction:**
-When using Material UI with Emotion and Next.js SSR, a common bug that can occur is due to an incompatibility between the way Emotion and Material UI generate CSS classes. This can result in conflicts with the styles of your application, which can lead to unexpected layout issues or broken features.
+**Issue Description:**
+When using Material UI and Emotion together in a Next.js application, you may encounter a compatibility issue that prevents server-side rendering (SSR) of styles. This can result in a flicker of unstyled content when loading the page, which can be especially noticeable on slower connections. The issue arises due to the way Material UI and Emotion generate CSS class names, leading to conflicting class names between the two libraries.
+
+**Technical Details:**
+Material UI and Emotion use different strategies for generating CSS class names. Material UI uses a deterministic class name generator that relies on the component's name and a unique key, whereas Emotion uses a non-deterministic class name generator that generates unique class names for each rendered instance of a component. When Material UI and Emotion are used together in a Next.js application, they may generate conflicting class names that can result in missing or incorrect styles during server-side rendering.
 
 **Solution:**
-The solution to this problem is to use the @emotion/cache plugin of Emotion and pass it to the Material UI ThemeProvider. This will allow Material UI and Emotion to share the same style cache and resolve the conflict of generated classes.
+The solution for this problem is to use the "@emotion/cache" plugin of Emotion and pass it to the Material UI ThemeProvider. This will allow Material UI and Emotion to share the same style cache and resolve the generated class conflict.
 
-Here is an example of how to do it:
+To implement this solution, you will need to install "@emotion/cache" and "@emotion/react" in your Next.js project. You will also need to modify the "_document.js" file in the "pages" folder of your project to import the necessary packages and create a cache provider. Finally, you will need to wrap your component with the Emotion "CacheProvider" in your "_app.js" file.
+
+Once implemented, this solution should resolve the compatibility issue between Material UI, Emotion, and Next.js SSR, allowing you to render styles correctly on the server and prevent unstyled content flicker on the client.
+
+## Here is an example of how to do it:
 
 **Step 1:**
 Install the @emotion/cache and @emotion/react packages in your Next.js project using the following command:
